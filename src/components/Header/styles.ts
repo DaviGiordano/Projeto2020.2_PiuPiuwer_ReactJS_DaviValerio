@@ -40,15 +40,16 @@ export const HeaderComponent = styled.header`
     .search-div{
         width:100%;
         margin-top:0.8rem; 
+        display:flex;
         justify-content:center;
         align-items:center;
     }
     .search-input{
-        display:none;
+        display:block;
         font-family:Quicksand;
         font-size:1rem;
         border-color:black;
-        border-radius: 10px;
+        border-radius: 1rem;
         width:10rem;
         padding:0.3rem;
     }
