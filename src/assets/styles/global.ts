@@ -20,7 +20,7 @@ export default createGlobalStyle`
     textarea,
     a,
     p{
-        font: 500 1.6rem Quicksand;
+        font: 500 1rem Quicksand;
     }
 
     @media (min-width: 700px){ 

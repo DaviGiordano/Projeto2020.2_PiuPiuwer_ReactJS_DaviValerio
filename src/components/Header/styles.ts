@@ -51,7 +51,7 @@ export const HeaderComponent = styled.header`
         border-color:black;
         border-radius: 1rem;
         width:10rem;
-        padding:0.3rem;
+        padding:0.5rem;
     }
     
     @media(max-width:410px){
@@ -59,7 +59,13 @@ export const HeaderComponent = styled.header`
             display:none;
         }
     }
-    
+    @media(min-width:1000px){
+        .search-div{
+            position:relative;
+            bottom:3.9rem;
+
+        }
+    }
     
 `;
 

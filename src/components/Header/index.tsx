@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({profilePicture}) => {
 
             </div>
             <div className="search-div">
-                <input className="search-input" type="text"/>
+                <input placeholder="Buscar" className="search-input" type="text"/>
             </div>
                 
             

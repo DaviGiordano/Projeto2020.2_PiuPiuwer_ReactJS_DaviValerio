@@ -19,22 +19,25 @@ interface PiuProps {
 const Piu: React.FC<PiuProps> = ({piuwerName, piuwerPicture,text, isLiked,isPinned, likeCount}) => {
     return(
     <PiuComponent>
-        <header>
-            <img src={piuwerPicture} alt="foto perfi"/>
-            <strong>{piuwerName}</strong>
-        </header>
-        <main>
-            <p>{text}</p>
-        </main>
-        <footer>
-            <div className="likeDiv">
-                <img src={isLiked? likedIcon : notLikedIcon} alt=""/>
-                <small>{likeCount}</small>
-            </div>
-            <div className="pinDiv">
-               <img src={isPinned? pinnedIcon : notPinnedIcon} alt=""/>
-            </div>
-        </footer>
+        <div id="piu-wrap">
+            <header>
+                <img src={piuwerPicture} alt="foto perfi"/>
+                <strong>{piuwerName}</strong>
+            </header>
+            <main>
+                <p>{text}</p>
+            </main>
+            <footer>
+                <div className="likeDiv">
+                    <img src={isLiked? likedIcon : notLikedIcon} alt=""/>
+                    <small>{likeCount}</small>
+                </div>
+                <div className="pinDiv">
+                <img src={isPinned? pinnedIcon : notPinnedIcon} alt=""/>
+                </div>
+            </footer>
+        </div>
+        
     </PiuComponent>
     );
     

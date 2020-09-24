@@ -2,11 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const PiuComponent = styled.div`
+    display:flex;
+    flex-direction:column; 
+    align-items:center;
+    #piu-wrap{
+        
     max-width:100%;
     margin:1rem;
     padding:1rem;
     border: 1px solid black;
     border-radius:2rem;
+    }
+    
     /*all images */
     img{
         width:1.6rem;
@@ -48,5 +55,9 @@ export const PiuComponent = styled.div`
     footer div + div{
         margin-left:1rem;
     }
-
+    @media(min-width:800px){
+        #piu-wrap{
+            max-width:800px;
+        }
+    }
 `;

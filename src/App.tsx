@@ -2,11 +2,14 @@ import React from 'react';
 import Header from './components/Header';
 import Piu from './components/Piu';
 import GlobalStyle from './assets/styles/global';
+import Input from './components/Input'
 function App(){
     
     return(
         <>
         <Header profilePicture="https://avatars1.githubusercontent.com/u/69208456?s=460&u=abb281e389b7d7dc9a72e158aae87d1eeecaab8e&v=4"/>
+        <Input caracterCount={0} ></Input>
+        
         <Piu
          piuwerName="Davi Giordano"
          piuwerPicture="https://avatars1.githubusercontent.com/u/69208456?s=460&u=abb281e389b7d7dc9a72e158aae87d1eeecaab8e&v=4" 
