@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
@@ -7,13 +7,14 @@ import LogoBig from '../../assets/images/icons/logo-big.svg'
 import { signIn } from '../../services/auth';
 
 import {LoginPage} from './styles';
+import AuthContext from '../../contexts/auth';
 
 const Login: React.FC = () => {
 
-  async function handleSignIn() {  
-   //normalmente receberia o email e a senha inseridos!!
-   const response = await signIn();  //sign in demora um pouco para responder. Posso usar async await ou .then
-   console.log(response);
+  const {signed, signIn} = useContext(AuthContext);
+
+  async function handleSignIn() {  //normalmente receberia o email e a senha inseridos!!
+    signIn();
   }
 
   return (
