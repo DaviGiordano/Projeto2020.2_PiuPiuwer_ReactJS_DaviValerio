@@ -10,9 +10,9 @@ import {LoginPage} from './styles';
 
 const Login: React.FC = () => {
 
-  async function handleSignIn() {  //normalmente receberia o email e a senha inseridos!!
+  async function handleSignIn() {  
+   //normalmente receberia o email e a senha inseridos!!
    const response = await signIn();  //sign in demora um pouco para responder. Posso usar async await ou .then
-   
    console.log(response);
   }
 
@@ -24,10 +24,9 @@ const Login: React.FC = () => {
                 <Input placeholder="Usuario"></Input>
                 <Input placeholder="Senha"></Input>
             </form>
-            <Button title="enviar" onClick={() => {handleSignIn}}></Button>
+            
+            <Button onClick={handleSignIn} title="enviar" ></Button>
           </div>
-          
-
       </LoginPage>
   );
 }

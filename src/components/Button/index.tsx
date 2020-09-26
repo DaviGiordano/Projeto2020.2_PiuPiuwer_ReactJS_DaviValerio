@@ -7,7 +7,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({title, ...rest}) => {
-return <ButtonComponent>{title}</ButtonComponent>;
+return (
+  <ButtonComponent {...rest} >
+    {title}
+  </ButtonComponent>
+  
+  );
 };
 
 export default Button;

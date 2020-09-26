@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 const Redirection: React.FC = () => {
   return (
       <Redirect to={{
-          pathname:'/profile',
+          pathname:'/login',
       }}/>
   );
 }
