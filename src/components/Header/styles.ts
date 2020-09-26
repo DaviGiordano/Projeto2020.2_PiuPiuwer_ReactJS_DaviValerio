@@ -2,7 +2,6 @@ import styled, {css} from 'styled-components';
 
 export const HeaderComponent = styled.header`
 
-
     .main-content{
     display:flex;
     max-width:100%;
@@ -52,6 +51,7 @@ export const HeaderComponent = styled.header`
         border-radius: 1rem;
         width:10rem;
         padding:0.5rem;
+        background:none;
     }
     
     @media(max-width:410px){

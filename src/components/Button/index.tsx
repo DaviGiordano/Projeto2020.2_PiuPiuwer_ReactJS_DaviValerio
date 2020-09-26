@@ -1,14 +1,13 @@
-import React from 'react';
-import { ButtonComponent} from './styles';
+import React, { ButtonHTMLAttributes } from 'react';
 
+import { ButtonComponent } from './styles';
 
-
-const Button: React.FC = () => {
-    return(
-        <ButtonComponent>
-            Entrar
-        </ButtonComponent>
-    );
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  title: string;
 }
+
+const Button: React.FC<ButtonProps> = ({title, ...rest}) => {
+return <ButtonComponent>{title}</ButtonComponent>;
+};
 
 export default Button;
