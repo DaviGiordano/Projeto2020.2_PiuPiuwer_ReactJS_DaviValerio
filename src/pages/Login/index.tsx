@@ -11,10 +11,13 @@ import AuthContext from '../../contexts/auth';
 
 const Login: React.FC = () => {
 
-  const {signed, signIn} = useContext(AuthContext);
-
+  const {signed, user, signIn} = useContext(AuthContext);
+  console.log(signed);
+  console.log(user);
+  
   async function handleSignIn() {  //normalmente receberia o email e a senha inseridos!!
     signIn();
+
   }
 
   return (

@@ -1,4 +1,12 @@
-export function signIn() {
+interface Response {
+    token: string;
+    user: {
+        name: string;
+        email: string;
+    }
+}
+
+export function signIn(): Promise<Response> { //equivalente a dar um axios.get
     return new Promise(resolve => {
         setTimeout(() => {
             resolve({
@@ -8,6 +16,6 @@ export function signIn() {
                     email: 'davigiordano@gmail.com',
                 },
             });
-        },  2000);
+        },  1000);
     });
 }
