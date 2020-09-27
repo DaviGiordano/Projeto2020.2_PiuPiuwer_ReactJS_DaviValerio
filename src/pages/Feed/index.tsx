@@ -8,6 +8,8 @@ import  { useAuth } from '../../contexts/auth';
 import { signIn } from '../../services/auth';
 
 const Feed: React.FC = () => {
+  //para pegar as coisas guardadas no contexto, uso o hook criado useAuth, que retorna os valores.
+  //fazer a desconstrução deles.
   const {signOut, user} = useAuth();
 
   function handleSignOut() {
