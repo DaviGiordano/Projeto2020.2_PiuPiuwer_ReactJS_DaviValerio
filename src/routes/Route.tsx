@@ -1,16 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Route as ReactRouter, RouteProps as ReactRouteProps, Redirect } from 'react-router-dom';
 
-import AuthContext from '../contexts/auth';
+import {useAuth} from '../contexts/auth';
 //import { useAuth } from '../hooks/auth';
 //ainda não criei a função useAuth, que retorna em seu context o objeto user.
 interface RouteProps extends ReactRouteProps {
     isPrivate?: boolean;
     component: React.ComponentType;
 }
+//talvez implementear loading screen
 
 const Route: React.FC<RouteProps> = ({ isPrivate= false, component:Component, ...rest }) => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     return(
         <ReactRouter //em return utilizaremos o componente ReactRouter, que receberá todas as props passadas para Route e a propriedades render
         {...rest}

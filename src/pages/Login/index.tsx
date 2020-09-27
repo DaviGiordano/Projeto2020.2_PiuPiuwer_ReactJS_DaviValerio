@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
@@ -7,11 +7,11 @@ import LogoBig from '../../assets/images/icons/logo-big.svg'
 import { signIn } from '../../services/auth';
 
 import {LoginPage} from './styles';
-import AuthContext from '../../contexts/auth';
+import  { useAuth } from '../../contexts/auth';
 
 const Login: React.FC = () => {
 
-  const {signed, user, signIn} = useContext(AuthContext);
+  const {signed, user, signIn} = useAuth();
   console.log(signed);
   console.log(user);
   

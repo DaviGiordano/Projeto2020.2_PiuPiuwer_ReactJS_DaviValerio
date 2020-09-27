@@ -1,15 +1,14 @@
-import React, { useContext } from 'react';
-import { HeaderComponent } from '../../components/Header/styles';
+import React from 'react';
 import Piu from '../../components/Piu'
 import Header from '../../components/Header/';
 import Textarea from '../../components/Textarea/';
 import { Container } from './styles';
 import Button from '../../components/Button';
-import AuthContext from '../../contexts/auth';
+import  { useAuth } from '../../contexts/auth';
 import { signIn } from '../../services/auth';
 
 const Feed: React.FC = () => {
-  const {signOut} = useContext(AuthContext);
+  const {signOut, user} = useAuth();
 
   function handleSignOut() {
     signOut();
@@ -18,6 +17,8 @@ const Feed: React.FC = () => {
     <Container>
       <Header/>
       <Button title="Sign out" onClick={handleSignOut} ></Button>
+      <p>{user?.name /*?. significa que vai mostar só se nao for nulo */}</p> 
+      
       <Textarea caracterCount={0} />
       <Piu
          piuwerName="Davi Giordano"
