@@ -11,7 +11,7 @@ interface AuthContextData {
     signed: boolean;
     user: User | null;
     loading: boolean;
-    signIn(): Promise<void>;
+    signIn(usernameInput:string, passwordInput:string): Promise<void>;
     signOut(): void;
 }
 //cria um contexto AuthContext que pode ser passado como parâmetro para useContext()
@@ -48,9 +48,10 @@ export const AuthProvider: React.FC = ({children}) => {
         loadStorageData();
     }, []);
 
-    async function signIn() { //usuário fez login
+    async function signIn(usernameInput:string, passwordInput:string) { //usuário fez login
         //chama a função signIn que está em services e guarda o retorno em response
-        const response = await auth.signIn("davi-giordano", "polijunior");
+        const response = await auth.signIn(usernameInput, passwordInput);
+        console.log('AAAAA');
         console.log(response);
         //Atualiza o componente User com os dados de response.user
         //essa linha de código tem algum efeito?
