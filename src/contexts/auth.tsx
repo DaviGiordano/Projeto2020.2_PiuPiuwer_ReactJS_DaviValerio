@@ -50,16 +50,18 @@ export const AuthProvider: React.FC = ({children}) => {
 
     async function signIn() { //usuário fez login
         //chama a função signIn que está em services e guarda o retorno em response
-        const response = await auth.signIn();
+        const response = await auth.signIn("davi-giordano", "polijunior");
+        console.log(response);
         //Atualiza o componente User com os dados de response.user
-        setUser(response.user);
+        //essa linha de código tem algum efeito?
+        setUser(response.data.username);
 
         //código para fazer com que o token retornado seja usado como header de qualquer chamada à API
-        api.defaults.headers['Authorization'] = `Bearer ${response.token}`;
+        api.defaults.headers['Authorization'] = `Bearer ${response.data}`;
 
         //guarda no local storage o user e o token
-        localStorage.setItem('PiuPiuer:user', JSON.stringify(response.user));
-        localStorage.setItem('PiuPiuer:token', (response.token));
+        //localStorage.setItem('PiuPiuer:user', JSON.stringify(response.data.user));
+        localStorage.setItem('PiuPiuer:token', (response.data));
     }
     function signOut(){ //usuário apertou sign out
         //limpa o local storage

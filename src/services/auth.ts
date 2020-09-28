@@ -1,21 +1,33 @@
-interface Response {
-    token: string;
-    user: {
-        name: string;
-        email: string;
-    }
-}
+import axios from "axios";
 
+/*
 export function signIn(): Promise<Response> { //equivalente a dar um axios.get
+    const usuario = 'usuario';
+    const senha = 'senha';
+
     return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({
-                token: '2o37irulhqweiufli',
-                user: {
-                    name: 'Davi',
-                    email: 'davigiordano@gmail.com',
-                },
-            });
-        },  1000);
+        const response = await Axios ({
+            url: 'http://piupiuwer.polijr.com.br/login/',
+            method: 'POST',
+            data: {
+                username: usuario,
+                password: senha
+            }
+        })
     });
+}
+*/
+
+export async function signIn(usernameInput:string, passwordInput:string){
+    const usuario = usernameInput;
+    const senha = passwordInput;
+    const response = await axios({
+        url: 'http://piupiuwer.polijr.com.br/login/',
+        method: 'POST',
+        data: {
+            username: usuario,
+            password: senha
+        }
+     })
+     return (response);   
 }
