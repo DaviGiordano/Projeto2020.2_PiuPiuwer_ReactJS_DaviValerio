@@ -29,5 +29,13 @@ export async function signIn(usernameInput:string, passwordInput:string){
             password: senha
         }
      })
+     .catch(err => {
+         if (!usernameInput || !passwordInput){
+            return("preencha todos os campos")
+         }
+         else{
+             return("usuário ou senha errado")
+         }
+     });
      return (response);   
 }

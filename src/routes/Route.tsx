@@ -11,12 +11,13 @@ interface RouteProps extends ReactRouteProps {
 //talvez implementear loading screen
 
 const Route: React.FC<RouteProps> = ({ isPrivate= false, component:Component, ...rest }) => {
-    const { user } = useAuth();
+    const { signed } = useAuth();
+    console.log(signed);
     return(
         <ReactRouter //em return utilizaremos o componente ReactRouter, que receberá todas as props passadas para Route e a propriedades render
         {...rest}
         render={({ location }) => { //render: função executada quando o endpoint da URL correspode ao path, ou seja, no lugar de renderizarmos um component, executaremos uma função que retornará o componente a ser renderizado
-            return isPrivate === !!user //dupla negação
+            return isPrivate === !!signed //dupla negação
             ? (
                 <Component/>
             ) : (

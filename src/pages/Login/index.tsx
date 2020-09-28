@@ -15,14 +15,14 @@ const Login: React.FC = () => {
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
 
+
+
   const {signed, user, signIn} = useAuth(); //chama o nosso hook criado useAuth
   console.log(signed);
   console.log(user);
   
   async function handleSignIn(usernameInput:string, passwordInput:string) {  //normalmente receberia o email e a senha inseridos!!
-    if(usernameInput && passwordInput){
       signIn(usernameInput, passwordInput);
-    }
   }
  
 
@@ -35,6 +35,7 @@ const Login: React.FC = () => {
                 <Input value={usernameInput} onChange={(e) => {setUsernameInput(e.target.value)}} id="inputUsername" placeholder="Usuario"></Input>
                 <Input value={passwordInput} onChange={(e) => {setPasswordInput(e.target.value)}} id="inputPassword" placeholder="Senha"></Input>
             </form>
+            <p>{}</p>
             <Button onClick={() => {handleSignIn(usernameInput,passwordInput)}} title="enviar" ></Button>
           </div>
       </LoginPage>
