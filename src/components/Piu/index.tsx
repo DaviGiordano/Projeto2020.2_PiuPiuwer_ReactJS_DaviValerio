@@ -7,13 +7,13 @@ import notPinnedIcon from '../../assets/images/icons/notPinned-icon.svg';
 
 import {PiuComponent} from './styles';
 
-interface PiuProps {
-    piuwerPicture:string;
+export interface PiuProps {
+    piuwerPicture?:string;
     piuwerName:string;
-    text:string;
-    isLiked:boolean;
-    isPinned:boolean;
-    likeCount:number;
+    text?:string;
+    isLiked?:boolean;
+    isPinned?:boolean;
+    likeCount?:number;
 }
 
 const Piu: React.FC<PiuProps> = ({piuwerName, piuwerPicture,text, isLiked,isPinned, likeCount}) => {

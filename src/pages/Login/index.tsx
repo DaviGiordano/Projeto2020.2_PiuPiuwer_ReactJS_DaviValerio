@@ -6,28 +6,22 @@ import {LoginPage} from './styles';
 
 import LogoBig from '../../assets/images/icons/logo-big.svg'
 
-
-
 import  { useAuth } from '../../contexts/auth';
 
 const Login: React.FC = () => {
 
+  const {signIn} = useAuth(); 
+
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
 
-
-
-  const {signed, user, signIn} = useAuth(); //chama o nosso hook criado useAuth
-  console.log(signed);
-  console.log(user);
-  
-  async function handleSignIn(usernameInput:string, passwordInput:string) {  //normalmente receberia o email e a senha inseridos!!
+  async function handleSignIn(usernameInput:string, passwordInput:string) {
       signIn(usernameInput, passwordInput);
   }
  
 
   return (
-    //jsx retornado pelo componente (página)
+    
       <LoginPage>
           <img src={LogoBig} alt=""/>
           <div className="wrap">

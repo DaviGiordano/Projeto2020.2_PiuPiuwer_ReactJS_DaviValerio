@@ -1,5 +1,4 @@
-import React from 'react';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 
 export const TextareaComponent = styled.div`
     max-width:100%;

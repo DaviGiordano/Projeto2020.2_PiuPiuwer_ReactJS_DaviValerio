@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const PiuComponent = styled.div`
@@ -7,21 +6,22 @@ export const PiuComponent = styled.div`
     align-items:center;
     #piu-wrap{
         
-    max-width:100%;
+    width:70%;
     margin:1rem;
     padding:1rem;
     border: 1px solid black;
     border-radius:2rem;
     }
-    
-    /*all images */
-    img{
+    footer img{
         width:1.6rem;
     }
-    /*piuwer picture */
+    
+    /*all images */
     header img{
-        border-radius: 50%;
+        height:2rem;
     }
+
+    
     /*piuwer name */
     strong{
         margin-left:0.6rem;

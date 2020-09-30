@@ -5,7 +5,7 @@ import Button from '../Button/';
 interface TextareaProps{
     caracterCount:number;
 }
-const Textarea: React.FC<TextareaProps> = ({caracterCount}) => {
+const Textarea: React.FC<TextareaProps> = ({caracterCount, children}) => {
     return(
         <TextareaComponent>
         <div className="" id="wrap">
@@ -14,9 +14,10 @@ const Textarea: React.FC<TextareaProps> = ({caracterCount}) => {
             </main>
             <footer>
                 <small>{caracterCount}/140</small>
-                <Button title="Enviar"></Button>
             </footer>
+            {children}
         </div>
+
         </TextareaComponent>
     );
    
