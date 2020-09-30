@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { TextareaHTMLAttributes } from 'react';
 import {TextareaComponent} from './styles';
 import Button from '../Button/';
 
-interface TextareaProps{
+interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>{
     caracterCount:number;
 }
-const Textarea: React.FC<TextareaProps> = ({caracterCount, children}) => {
+const Textarea: React.FC<TextareaProps> = ({caracterCount, children, ...rest}) => {
     return(
-        <TextareaComponent>
+        <TextareaComponent >
         <div className="" id="wrap">
             <main>
-                <textarea name="writePiu" id="writePiu"></textarea>            
+                <textarea {...rest} name="writePiu" id="writePiu"></textarea>            
             </main>
             <footer>
                 <small>{caracterCount}/140</small>

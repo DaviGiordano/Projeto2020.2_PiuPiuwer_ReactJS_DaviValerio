@@ -15,6 +15,7 @@ const Feed: React.FC = () => {
   const {signOut, user, token} = useAuth();
 
   const [pius, setPius] = useState<any[]>([]);
+  const [textareaValue, setTextareaValue] = useState<string>("");
   useEffect(()=>{
     
       async function handleGetPius(){
@@ -35,24 +36,52 @@ const Feed: React.FC = () => {
       }
 
   },[token]);
-  /*
-  async function sendPiu(userIdInput:number,mensagemInput:string) { 
-  const userId = userIdInput;
-   const mensagem = mensagemInput;
+  useEffect(()=>{},[textareaValue]);
+  
+  async function sendPiu(mensagemInput:string) {
+
+    if(user?.id){
+      if(!mensagemInput){
+        console.log("campo vazio")
+      }else if(mensagemInput.length>140){
+        console.log("maior do que 140")
+      }else{
+        const userId = user.id;
+        const mensagem = mensagemInput;
+        console.log(userId);
+        console.log(mensagem);
+  
+         const response = await axios({
+            url: 'http://piupiuwer.polijr.com.br/pius/',
+            method: 'POST',
+            headers: {
+                Authorization: `JWT ${token}`
+            },
+            data: {
+                usuario: userId,
+                texto: mensagem
+            }
+         })
+         //setPius([...pius, response]);
+      }
+      
+    }
+ 
+  }
+  async function handleDelete() {
+    const piuId = 251
  
    const response = await axios({
-      url: 'http://piupiuwer.polijr.com.br/pius/',
-      method: 'POST',
+      url: `http://piupiuwer.polijr.com.br/pius/${piuId}`,
+      method: 'DELETE',
       headers: {
           Authorization: `JWT ${token}`
-      },
-      data: {
-          usuario: userId,
-          texto: mensagem
       }
    })
+
+    
   }
-  */
+  
 
   
   
@@ -68,9 +97,10 @@ const Feed: React.FC = () => {
       <Header/>
 
       <Button  title="Sign out" onClick={handleSignOut} ></Button>
-      <Button title="Test" onClick={handleTest}></Button>
+      <Button title="Delete Piu" onClick={handleDelete}></Button>
       
-      <Textarea caracterCount={0}>
+      <Textarea caracterCount={textareaValue.length} value={textareaValue} onChange={(e) => {setTextareaValue(e.target.value)}}>
+        <Button title="Enviar" onClick={()=>{sendPiu(textareaValue)}}></Button>
       </Textarea>
 
       <main>

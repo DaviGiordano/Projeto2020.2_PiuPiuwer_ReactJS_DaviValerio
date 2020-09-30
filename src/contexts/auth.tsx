@@ -3,6 +3,7 @@ import * as auth from '../services/auth';
 import api from '../services/api';
 interface User{
     firstname:string;
+    id:number;
     lastname:string;
     foto:string;
 }
@@ -40,8 +41,8 @@ export const AuthProvider: React.FC = ({children}) => {
             return ("preencha todos os campos");
         }
         else if(response === "usuário ou senha errado"){
-            console.log("usuário ou senha errado")
-            return ("usuário ou senha errado");
+            console.log("usuário ou senha incorreto")
+            return ("usuário ou senha incorreto");
         }
         else{
             
@@ -55,7 +56,7 @@ export const AuthProvider: React.FC = ({children}) => {
             
 
             setToken(response.data.token);
-            setUser({firstname:user.first_name,lastname:user.last_name, foto:user.foto});
+            setUser({firstname:user.first_name,lastname:user.last_name,id:user.id, foto:user.foto});
             console.log(response);
             console.log("Sucesso ao efetuar login")
             return "";
