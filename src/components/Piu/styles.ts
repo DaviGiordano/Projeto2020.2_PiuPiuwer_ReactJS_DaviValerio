@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const PiuComponent = styled.div`
     display:flex;
@@ -45,6 +45,15 @@ export const PiuComponent = styled.div`
     .likeDiv{
         display:flex;
         align-items:center;
+        
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .pinDiv{
+        &:hover{
+            cursor: pointer;
+        }
     }
     small{
         margin-left:0.4rem;

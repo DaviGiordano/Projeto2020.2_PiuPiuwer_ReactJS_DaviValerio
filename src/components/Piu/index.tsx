@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ButtonHTMLAttributes} from 'react';
 import likedIcon from '../../assets/images/icons/liked-icon.svg';
 import notLikedIcon from '../../assets/images/icons/notLiked-icon.svg';
 import pinnedIcon from '../../assets/images/icons/pinned-icon.svg';
@@ -7,16 +7,16 @@ import notPinnedIcon from '../../assets/images/icons/notPinned-icon.svg';
 
 import {PiuComponent} from './styles';
 
-export interface PiuProps {
+export interface PiuProps extends ButtonHTMLAttributes<HTMLButtonElement>{
     piuwerPicture?:string;
-    piuwerName:string;
+    piuwerName?:string;
     text?:string;
     isLiked?:boolean;
     isPinned?:boolean;
     likeCount?:number;
 }
 
-const Piu: React.FC<PiuProps> = ({piuwerName, piuwerPicture,text, isLiked,isPinned, likeCount}) => {
+const Piu: React.FC<PiuProps> = ({piuwerName, piuwerPicture,text, isLiked,isPinned, likeCount, ...rest}) => {
     return(
     <PiuComponent>
         <div id="piu-wrap">
@@ -28,11 +28,11 @@ const Piu: React.FC<PiuProps> = ({piuwerName, piuwerPicture,text, isLiked,isPinn
                 <p>{text}</p>
             </main>
             <footer>
-                <div className="likeDiv">
+                <div  className="likeDiv">
                     <img src={isLiked? likedIcon : notLikedIcon} alt=""/>
                     <small>{likeCount}</small>
                 </div>
-                <div className="pinDiv">
+                <div  className="pinDiv">
                 <img src={isPinned? pinnedIcon : notPinnedIcon} alt=""/>
                 </div>
             </footer>
