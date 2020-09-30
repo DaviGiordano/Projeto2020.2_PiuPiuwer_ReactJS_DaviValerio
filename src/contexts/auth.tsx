@@ -9,7 +9,7 @@ interface User{
 export interface AuthContextData {
     user: User | null;
     token: string;
-    signIn(usernameInput:string, passwordInput:string): Promise<void>;
+    signIn(usernameInput:string, passwordInput:string): Promise<string>;
     signOut(): void;
 }
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -37,13 +37,11 @@ export const AuthProvider: React.FC = ({children}) => {
         const response = await auth.signIn(usernameInput, passwordInput);
         if(response === "preencha todos os campos"){
             console.log("preencha todos os campos");
-            alert("preencha todos os campos");
-            
+            return ("preencha todos os campos");
         }
         else if(response === "usuário ou senha errado"){
             console.log("usuário ou senha errado")
-            alert("usuário ou senha errado");
-
+            return ("usuário ou senha errado");
         }
         else{
             
@@ -60,7 +58,7 @@ export const AuthProvider: React.FC = ({children}) => {
             setUser({firstname:user.first_name,lastname:user.last_name, foto:user.foto});
             console.log(response);
             console.log("Sucesso ao efetuar login")
-
+            return "";
         }
 
         

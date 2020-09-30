@@ -70,7 +70,7 @@ const Feed: React.FC = () => {
       <Button  title="Sign out" onClick={handleSignOut} ></Button>
       <Button title="Test" onClick={handleTest}></Button>
       
-      <Textarea>
+      <Textarea caracterCount={0}>
       </Textarea>
 
       <main>

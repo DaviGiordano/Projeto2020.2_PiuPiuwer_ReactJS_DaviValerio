@@ -14,9 +14,11 @@ const Login: React.FC = () => {
 
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
-
+  const [signInResponse, setsignInResponse] = useState<string>('');
   async function handleSignIn(usernameInput:string, passwordInput:string) {
-      signIn(usernameInput, passwordInput);
+      const response = await signIn(usernameInput, passwordInput);
+      setsignInResponse(response);
+
   }
  
 
@@ -29,7 +31,7 @@ const Login: React.FC = () => {
                 <Input value={usernameInput} onChange={(e) => {setUsernameInput(e.target.value)}} id="inputUsername" placeholder="Usuario"></Input>
                 <Input value={passwordInput} onChange={(e) => {setPasswordInput(e.target.value)}} id="inputPassword" placeholder="Senha"></Input>
             </form>
-            <p>{}</p>
+            <p>{signInResponse}</p>
             <Button onClick={() => {handleSignIn(usernameInput,passwordInput)}} title="enviar" ></Button>
           </div>
       </LoginPage>
