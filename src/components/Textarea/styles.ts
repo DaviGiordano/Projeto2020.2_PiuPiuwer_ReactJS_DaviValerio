@@ -1,6 +1,11 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
+
+interface TextareaProps{
+    color:string;
+}
 
 export const TextareaComponent = styled.div`
+
     max-width:100%;
     margin:1rem;
     display:flex;
@@ -25,6 +30,7 @@ export const TextareaComponent = styled.div`
         border-color:black;
         padding:0.6rem;
         background:none;
+        border-color:${props => props.color}
     }
     footer{
         display:flex;
@@ -33,6 +39,8 @@ export const TextareaComponent = styled.div`
     small{
         margin-top:0.4rem;
         font-size:0.8rem;
+        color:${props => props.color}
+
     }
     
 `;

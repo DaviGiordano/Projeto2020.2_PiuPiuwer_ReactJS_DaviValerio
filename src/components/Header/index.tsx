@@ -18,6 +18,7 @@ const Header: React.FC<HeaderProps> = ({profilePicture}) => {
                         <a href="./feed"><img src={SmallLogo} alt="logo"/></a>
                         <a id="site-name" href="./feed">Piupiuwer</a>
                     </div>
+
                 <nav id="navigation-container">
                     <a className="navigation-item" href="./feed"><img src={HomeIcon} alt="Pagina principal"/></a>
                     <a className="navigation-item" href="./feed"><img src={NotificationsIcon} alt="Pagina principal"/></a>

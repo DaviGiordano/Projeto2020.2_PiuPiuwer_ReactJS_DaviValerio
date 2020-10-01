@@ -28,6 +28,10 @@ export const PiuComponent = styled.div`
         font-size:1rem;
 
     }
+    button{
+        background:none;
+        border:none;
+    }
     
     header{
         display:flex;
@@ -51,6 +55,13 @@ export const PiuComponent = styled.div`
         }
     }
     .pinDiv{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .delDiv{
+        justify-self:flex-end;
+        align-self:flex-end;
         &:hover{
             cursor: pointer;
         }

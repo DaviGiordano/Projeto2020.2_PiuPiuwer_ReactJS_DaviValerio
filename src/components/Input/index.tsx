@@ -2,9 +2,8 @@ import React, {InputHTMLAttributes} from 'react';
 
 import { InputComponent } from './styles';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
-    isBig?:boolean;
 }
-const Input: React.FC<InputProps> = ({isBig, ...rest}) => {
+const Input: React.FC<InputProps> = ({...rest}) => {
   return (
       <InputComponent {...rest}>
           

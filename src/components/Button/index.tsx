@@ -4,11 +4,12 @@ import { ButtonComponent } from './styles';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
+  buttonOpacity?:number;
 }
 
-const Button: React.FC<ButtonProps> = ({title, ...rest}) => {
+const Button: React.FC<ButtonProps> = ({buttonOpacity, title, ...rest}) => {
 return (
-  <ButtonComponent {...rest} >
+  <ButtonComponent  buttonOpacity={buttonOpacity || 1} {...rest} >
     {title}
   </ButtonComponent>
   

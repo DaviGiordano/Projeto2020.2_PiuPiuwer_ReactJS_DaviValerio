@@ -1,7 +1,8 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const HeaderComponent = styled.header`
 
+    
     .main-content{
     display:flex;
     max-width:100%;

@@ -1,6 +1,8 @@
-import styled from 'styled-components';
-
-export const ButtonComponent = styled.button`
+import styled, {css} from 'styled-components';
+interface ButtonProps{
+    buttonOpacity:number;
+}
+export const ButtonComponent = styled.button<ButtonProps>`
 
         margin-top:0.4rem;
         width: 4rem;
@@ -16,9 +18,16 @@ export const ButtonComponent = styled.button`
         font-style: normal;
         font-weight: 500;
         color: #FFFFFF;
+        opacity:${props => props.buttonOpacity};
 
     &:hover{
         cursor: pointer;
     }
-    
+    ${props =>
+	    props.buttonOpacity<1 &&
+        css`
+        &:hover{
+            cursor: default;
+        }
+	    `};
 `;
