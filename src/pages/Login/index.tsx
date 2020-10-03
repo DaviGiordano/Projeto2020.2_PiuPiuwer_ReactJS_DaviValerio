@@ -28,8 +28,22 @@ const Login: React.FC = () => {
           <img src={LogoBig} alt=""/>
           <div className="wrap">
             <form action="">
-                <Input value={usernameInput} onChange={(e) => {setUsernameInput(e.target.value)}} id="inputUsername" placeholder="Usuario"></Input>
-                <Input value={passwordInput} onChange={(e) => {setPasswordInput(e.target.value)}} id="inputPassword" placeholder="Senha"></Input>
+
+                <Input 
+                  value={usernameInput} 
+                  onChange={(e) => {setUsernameInput(e.target.value)}} 
+                  id="inputUsername" 
+                  placeholder="Usuario"
+                />
+                
+                <Input 
+                  type="password" 
+                  value={passwordInput} 
+                  onChange={(e) => {setPasswordInput(e.target.value)}} 
+                  id="inputPassword" 
+                  placeholder="Senha"
+                />
+                
             </form>
             <p>{signInResponse}</p>
             <Button onClick={() => {handleSignIn(usernameInput,passwordInput)}} title="enviar" ></Button>

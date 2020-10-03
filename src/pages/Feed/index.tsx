@@ -8,11 +8,11 @@ import Button from '../../components/Button';
 
 import { Container } from './styles';
 
-import  { useAuth, UserApi, PiuData, Following, changeUser } from '../../contexts/auth';
+import  { useAuth, UserApi, PiuData, Following } from '../../contexts/auth';
 
 const Feed: React.FC = () => {
   
-  const {signOut, user, token} = useAuth();
+  const {signOut, user, token, changeUser} = useAuth();
 
   const [pius, setPius] = useState<Array<PiuData>>([]);
   const [textareaValue, setTextareaValue] = useState<string>('');
@@ -28,7 +28,6 @@ const Feed: React.FC = () => {
     })
     return favoritedPius.map(piu => piu.id)
   },[user,pius]);
-                                                    //antes: ()
   const favoritedPiusIds = useMemo(
     () => favoritedPiusIdsCallback(pius)
     ,[user, pius]
@@ -48,7 +47,7 @@ const Feed: React.FC = () => {
   const piusByFollowedUsersIds = useMemo(()=>{
 
     const piusByFollowedUsers = pius.filter(piu => {
-
+      console.log(user.seguindo)
       const usernamesIamFollowing = user.seguindo.map((item) => item.username);
       //console.log(usernamesIamFollowing)
       return usernamesIamFollowing.includes(piu.usuario.username)
