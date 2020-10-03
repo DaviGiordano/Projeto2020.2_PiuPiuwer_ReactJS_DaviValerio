@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 
 import { Container } from './styles';
 
-import  { useAuth, UserApi, PiuData } from '../../contexts/auth';
+import  { useAuth, UserApi, PiuData, Following, changeUser } from '../../contexts/auth';
 
 const Feed: React.FC = () => {
   
@@ -38,35 +38,40 @@ const Feed: React.FC = () => {
   const likedPiusIds = useMemo(()=>{
     const likedPius = pius.filter(piu => {
       const usuariosQueDeramLike = piu.likers.map((item: UserApi) => item.id);
-      
+      console.log("BBBBBBBBB")
+
       return usuariosQueDeramLike.includes(user?.id);
     }) 
     return likedPius.map(piu => piu.id)
   },[user, pius]);
 
- /* const piusByFollowedUsersIds = useMemo(()=>{
+  const piusByFollowedUsersIds = useMemo(()=>{
+
     const piusByFollowedUsers = pius.filter(piu => {
-      const followers = user
+
+      const usernamesIamFollowing = user.seguindo.map((item) => item.username);
+      //console.log(usernamesIamFollowing)
+      return usernamesIamFollowing.includes(piu.usuario.username)
     })
-  },[]);
-*/
+    return piusByFollowedUsers.map(piu => piu.id)
+  },[user, pius]);
+  
   const setSortedPius = useCallback((newPius: Array<PiuData>) => {
     const favoritedPiusIdsLocal = favoritedPiusIdsCallback(newPius);
-    console.log('oi');
     function compare(a: PiuData, b: PiuData){
-      console.log({
-        result:(favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0),
-        favoritedPiusIdsLocal,
-        a:a.id,
-        b:b.id,
-        includeA: favoritedPiusIdsLocal.includes(a.id),
-        includeB: favoritedPiusIdsLocal.includes(b.id)
-      });
+      // console.log({
+      //   result:(favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0),
+      //   favoritedPiusIdsLocal,
+      //   a:a.id,
+      //   b:b.id,
+      //   includeA: favoritedPiusIdsLocal.includes(a.id),
+      //   includeB: favoritedPiusIdsLocal.includes(b.id)
+      // });
       return (favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0);
     }
     newPius.sort(compare);
     setPius(newPius);
-    console.log(newPius);
+    //console.log(newPius);
   },[setPius,favoritedPiusIdsCallback]);
 
   //useEffect(() => setSortedPius(pius), [favoritedPiusIds, setSortedPius, pius]);
@@ -82,7 +87,7 @@ const Feed: React.FC = () => {
     }
     })
     setSortedPius(response.data);
-    console.log(response.data)
+    //console.log(response.data)
   }
   
   /*CHAMADA DE handleGetPius */
@@ -212,7 +217,10 @@ const Feed: React.FC = () => {
         }
      })
      console.log(response);
-  },[]);
+
+     changeUser(user.username);
+
+    },[token,user]);
   /* */
   
   
@@ -230,7 +238,7 @@ const Feed: React.FC = () => {
           isLiked={likedPiusIds.includes(item.id)}
           isDeletable={item.usuario.id == user.id}
           likeCount={item.likers.length}
-          isFollowing={true}
+          isFollowing={piusByFollowedUsersIds.includes(item.id)}
           handlePin={
             ()=>{pinThisPiu(item)}           
           }
@@ -256,8 +264,9 @@ const Feed: React.FC = () => {
   
 
   const handleTest= useCallback(() => {
-    console.log(token);
-    console.log(pius);
+
+//    console.log(token);
+  //  console.log(pius);
     return 1;
   },[token,pius]);
   

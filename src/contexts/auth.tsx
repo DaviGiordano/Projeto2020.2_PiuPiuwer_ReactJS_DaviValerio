@@ -1,12 +1,7 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import * as auth from '../services/auth';
 import api from '../services/api';
-interface User{
-    firstname: string;
-    id: number;
-    lastname: string;
-    foto: string;
-}
+
 export interface UserApi{
     id: number;
     username: string;
@@ -15,7 +10,8 @@ export interface UserApi{
     email: string;
     sobre: string;
     foto: string;
-    seguindo:Array<{}>
+    seguindo:Array<{id:number,username:string}>
+
 }
 export interface PiuData{
     id: number;
@@ -25,17 +21,24 @@ export interface PiuData{
     texto: string;
     horario: string;
 }
+export interface Following{
+    
+    id:number,
+    username:string
+    
+}
 export interface AuthContextData {
-    user: User;
+    user: UserApi;
     token: string;
     signIn(usernameInput:string, passwordInput:string): Promise<string>;
     signOut(): void;
+    changeUser(username:string): Promise<void>;
 }
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
    
-    const [user, setUser] = useState<User>({} as User);
+    const [user, setUser] = useState<UserApi>({} as UserApi);
     const [token, setToken] = useState<string>('');
     
     useEffect(()=>{
@@ -43,7 +46,7 @@ export const AuthProvider: React.FC = ({children}) => {
         async function loadStorageData(){ 
             const storagedToken = localStorage.getItem(`@Project:token`);
             const storagedUser = localStorage.getItem(`@Project:user`);
-
+            console.log(storagedUser)
             if(storagedToken && storagedUser){
                 setToken(storagedToken);
                 setUser(JSON.parse(storagedUser));
@@ -73,9 +76,17 @@ export const AuthProvider: React.FC = ({children}) => {
             localStorage.setItem(`@Project:user`,JSON.stringify(user));
 
             setToken(response.data.token);
-            setUser({firstname:user.first_name,lastname:user.last_name,id:user.id, foto:user.foto});
+            setUser({first_name:user.first_name,
+                    last_name:user.last_name,
+                    id:user.id,
+                    foto:user.foto,
+                    username: user.username,
+                    email: user.email,
+                    sobre: user.sobre,
+                    seguindo: user.seguindo
+                });
             
-            console.log(response);
+            console.log(user);
             console.log("Sucesso ao efetuar login")
             
             return "";
@@ -83,14 +94,23 @@ export const AuthProvider: React.FC = ({children}) => {
 
         
     }
+    const changeUser = useCallback(async (username:string) => {
+        const newUser = await api.get("/usuarios/?search=" + username);
+        setUser(newUser.data);
+        localStorage.removeItem(`@Project:user`);
+        localStorage.setItem(`@Project:user`,JSON.stringify(user));
+        
+    }, [user]);
+    
+    
     function signOut(){ 
         localStorage.clear();
         setToken("");
-        setUser({} as User);
+        setUser({} as UserApi);
     }
-  
+    
     return(
-    <AuthContext.Provider value={{ token, user, signIn, signOut}}>
+    <AuthContext.Provider value={{ token, user, signIn, signOut, changeUser}}>
         {children}
     </AuthContext.Provider>
 );
