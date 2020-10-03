@@ -15,6 +15,7 @@ export interface UserApi{
     email: string;
     sobre: string;
     foto: string;
+    seguindo:Array<{}>
 }
 export interface PiuData{
     id: number;

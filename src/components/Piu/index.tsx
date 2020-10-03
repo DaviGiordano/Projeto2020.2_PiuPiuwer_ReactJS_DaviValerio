@@ -15,13 +15,16 @@ export interface PiuProps extends ButtonHTMLAttributes<HTMLButtonElement>{
     isLiked?:boolean;
     isPinned?:boolean;
     isDeletable?:boolean;
+    isFollowing?:boolean;
     likeCount?:number;
     handlePin(): void;
     handleDel(): void;
+    handleLike(): void;
+    handleFollow():void;
 
 }
 
-const Piu: React.FC<PiuProps> = ({piuwerName,handlePin, isDeletable, handleDel, piuwerPicture,text, isLiked,isPinned, likeCount, ...rest}) => {
+const Piu: React.FC<PiuProps> = ({piuwerName,handlePin,handleLike,handleFollow, isDeletable, handleDel, piuwerPicture,text, isLiked,isPinned, likeCount,isFollowing, ...rest}) => {
 
     return(
     <PiuComponent>
@@ -29,13 +32,14 @@ const Piu: React.FC<PiuProps> = ({piuwerName,handlePin, isDeletable, handleDel, 
             <header>
                 <img src={piuwerPicture} alt="foto perfi"/>
                 <strong>{piuwerName}</strong>
+                <small onClick={handleFollow}>{isFollowing? "Seguindo" : "seguir"}</small>
             </header>
             <main>
                 <p>{text}</p>
             </main>
             <footer>
 
-                <div className="likeDiv">
+                <div className="likeDiv" onClick={() => {handleLike()}}>
                     <img src={isLiked? likedIcon : notLikedIcon} alt=""/>
                     <small>{likeCount}</small>
                 </div>
@@ -44,7 +48,7 @@ const Piu: React.FC<PiuProps> = ({piuwerName,handlePin, isDeletable, handleDel, 
                     <img src={isPinned? pinnedIcon : notPinnedIcon} alt=""/>
                 </div>
                 <div className="delDiv"  onClick={()=> {handleDel()}} >
-                    <img src={trashIcon} alt=""/>
+                    <img src={isDeletable? trashIcon : ""} alt=""/>
                 </div>
 
             </footer>

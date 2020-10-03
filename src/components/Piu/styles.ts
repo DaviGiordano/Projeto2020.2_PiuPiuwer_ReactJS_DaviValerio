@@ -1,5 +1,6 @@
 import styled, {css} from 'styled-components';
 
+
 export const PiuComponent = styled.div`
     display:flex;
     flex-direction:column; 
@@ -37,6 +38,20 @@ export const PiuComponent = styled.div`
         display:flex;
         align-items:center;
     }
+    header small{
+        display: none;
+        font-size: 0.8rem;
+        margin-left: 1rem;
+        &:hover{
+            cursor:pointer;
+        }
+    }
+    &:hover{
+        header small{
+            display: flex;
+        }
+    }
+
     main{
         margin: 1rem 0;
     }
@@ -66,7 +81,7 @@ export const PiuComponent = styled.div`
             cursor: pointer;
         }
     }
-    small{
+    .likeDiv small{
         margin-left:0.4rem;
         color:red;
         font-size:0.8rem;
@@ -80,4 +95,5 @@ export const PiuComponent = styled.div`
             max-width:800px;
         }
     }
+    
 `;

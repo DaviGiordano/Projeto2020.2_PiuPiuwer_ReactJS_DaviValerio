@@ -19,17 +19,20 @@ const Feed: React.FC = () => {
   const [alert, setAlert] = useState<string>('');
   const [textareaColor, setTextareaColor] = useState<string>('black');
   const [buttonOpacity, setButtonOpacity] = useState<number>(1);
-  const [pinnedPius,setPinnedPius] = useState<any[]>([]);
-  
-  const favoritedPiusIdsCallback = useCallback(()=>{
+  const [pinnedPius,setPinnedPius] = useState<Array<PiuData>>([]);
+                                              // antes: ()
+  const favoritedPiusIdsCallback = useCallback((pius: Array<PiuData>)=>{
     const favoritedPius = pius.filter(piu => {
       const usuariosQueFavoritaram = piu.favoritado_por.map((item: UserApi) => item.id);
       return usuariosQueFavoritaram.includes(user.id);
     })
     return favoritedPius.map(piu => piu.id)
   },[user,pius]);
-
-  const favoritedPiusIds = useMemo(favoritedPiusIdsCallback,[user, pius]);
+                                                    //antes: ()
+  const favoritedPiusIds = useMemo(
+    () => favoritedPiusIdsCallback(pius)
+    ,[user, pius]
+  );
   
   
   const likedPiusIds = useMemo(()=>{
@@ -41,8 +44,14 @@ const Feed: React.FC = () => {
     return likedPius.map(piu => piu.id)
   },[user, pius]);
 
+ /* const piusByFollowedUsersIds = useMemo(()=>{
+    const piusByFollowedUsers = pius.filter(piu => {
+      const followers = user
+    })
+  },[]);
+*/
   const setSortedPius = useCallback((newPius: Array<PiuData>) => {
-    const favoritedPiusIdsLocal = favoritedPiusIdsCallback();
+    const favoritedPiusIdsLocal = favoritedPiusIdsCallback(newPius);
     console.log('oi');
     function compare(a: PiuData, b: PiuData){
       console.log({
@@ -133,8 +142,8 @@ const Feed: React.FC = () => {
     }
   },[textareaValue.length])
 
-  
-    async function delThisPiu(piu: PiuData) {
+    const delThisPiu = useCallback( async (piu: PiuData)=>{
+      
       const piuId = piu.id
       const response = await axios({
         url: `http://piupiuwer.polijr.com.br/pius/${piuId}`,
@@ -143,8 +152,67 @@ const Feed: React.FC = () => {
           Authorization: `JWT ${token}`
         }
       })
-    }
+      handleGetPius();
+    },[token]);
+
+    const pinThisPiu = useCallback( async (item:PiuData) => {
+      
+      console.log("hey");
+      const userId = user.id
+      const piuId = item.id
+      const response = await axios({
+         url: 'http://piupiuwer.polijr.com.br/pius/favoritar/',
+         method: 'POST',
+         headers: {
+             Authorization: `JWT ${token}`
+         },
+         data: {
+             usuario: userId,
+             piu: piuId
+         }
+      })
+      console.log(response);
+      handleGetPius();
+    },[token, user]);
+
+    const likeThisPiu = useCallback( async (item:PiuData) => {
+
+      const userId = user.id
+      const piuId = item.id
+      
+    
+      const response = await axios({
+         url: 'http://piupiuwer.polijr.com.br/pius/dar-like/',
+         method: 'POST',
+         headers: {
+             Authorization: `JWT ${token}`
+         },
+         data: {
+             usuario: userId,
+             piu: piuId
+         }
+      })
+      handleGetPius();
+   
+    }, [token, user]);
   
+    const followThisUser = useCallback( async (item:PiuData) => {
+      
+      const userToFollowId = Number(item.usuario.id);
+      const currentUserId = Number(user.id);
+      const response = await axios({
+        url: 'http://piupiuwer.polijr.com.br/usuarios/seguir/',
+        method: 'POST',
+        headers: {
+            Authorization: `JWT ${token}`
+        },
+        data: {
+            usuario_id: userToFollowId,
+            logado_id: currentUserId
+        }
+     })
+     console.log(response);
+  },[]);
   /* */
   
   
@@ -160,60 +228,43 @@ const Feed: React.FC = () => {
           text={item.texto}
           isPinned={favoritedPiusIds.includes(item.id)}
           isLiked={likedPiusIds.includes(item.id)}
+          isDeletable={item.usuario.id == user.id}
           likeCount={item.likers.length}
+          isFollowing={true}
           handlePin={
             ()=>{pinThisPiu(item)}           
           }
           handleDel={
             ()=>{delThisPiu(item)}
           }
+          handleLike={
+            () => {likeThisPiu(item)}
+          }
+          handleFollow={
+            () => {followThisUser(item)}
+          }
         />
       );
     })
   }, [pinThisPiu,delThisPiu,pius,likedPiusIds,user]);
 
-  /* DECLARAÇÃO RENDER PINNED */
-  /*function renderPinned() {
-    return pinnedPius.map((item)=>{
-      return (
-        <Piu
-          key={item.id}
-          piuwerName={item.usuario.first_name + " "+ item.usuario.last_name}
-          piuwerPicture={item.usuario.foto}
-          text={item.texto}
-          isPinned={true}
-          isLiked={item.likers[`username/?search=${user?.id}`]}
-          likeCount={item.likers.length}
-          handlePin={
-            ()=>{unpinThisPiu(item)}           
-          }
-          handleDel={
-            ()=>{delThisPiu(item)}
-          }
-        />
-      );
-    })  
-  }*/
-  
+ 
   /*CHAMADA DE SIGNOUT, importada de useAuth */
-  function handleSignOut() {
+  const handleSignOut = useCallback(() => {
     signOut();
-  }
+  },[signOut]);
+  
 
-  function handleTest(){
+  const handleTest= useCallback(() => {
     console.log(token);
     console.log(pius);
     return 1;
-  }
-  function pinThisPiu(item:PiuData){
-    setPinnedPius(pinnedPius => [...pinnedPius, item])
-    //const result = pius.filter(piu => piu.id != item.id);
-    //setPius(result);
-  }
-  function unpinThisPiu(item:PiuData){
-    const result = pinnedPius.filter(piu => piu.id !== item.id);
-    setPinnedPius(result);
-  }
+  },[token,pius]);
+  
+
+  
+
+ 
 
   return (
     <Container>
