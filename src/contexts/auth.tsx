@@ -95,7 +95,7 @@ export const AuthProvider: React.FC = ({children}) => {
         
     }
     const changeUser = useCallback(async (username:string) => {
-        const newUser = await api.get("/usuarios/?search=" + username);
+        const newUser = await api.get(`usuarios/?search=${username}`);
         setUser(newUser.data[0]);
         console.log(newUser.data);
         localStorage.removeItem(`@Project:user`);

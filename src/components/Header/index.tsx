@@ -8,8 +8,10 @@ import LocationIcon from '../../assets/images/icons/location-icon.svg'
 import {HeaderComponent} from './styles'
 interface HeaderProps {
     profilePicture?: string;
+    handleDesconectar(): void;
+    isSettings: boolean;
 }
-const Header: React.FC<HeaderProps> = ({profilePicture}) => {
+const Header: React.FC<HeaderProps> = ({profilePicture, handleDesconectar, isSettings}) => {
     return(
         <>
         <HeaderComponent>
@@ -24,10 +26,15 @@ const Header: React.FC<HeaderProps> = ({profilePicture}) => {
                     <a className="navigation-item" href="./feed"><img src={NotificationsIcon} alt="Pagina principal"/></a>
                     <a className="navigation-item" href="./feed"><img src={SearchIcon} alt="Pagina principal"/></a>
                     <a className="navigation-item" href="./feed"><img src={LocationIcon} alt="Pagina principal"/></a>
-                    <a className="profile-picture" href="./feed" id=""><img src={profilePicture} alt=""/></a>
+                    <img onClick={() => {isSettings? isSettings = true : isSettings = false}} className="profile-picture" src={profilePicture} alt=""/>
+                    <ul>
+                        <li>Configuracões</li>
+                        <li>Preferencias</li>
+                        <li onClick={handleDesconectar}>Desconectar</li>
+                    </ul>
                 </nav>
             
-
+                
             </div>
             <div className="search-div">
                 <input placeholder="Buscar" className="search-input" type="text"/>

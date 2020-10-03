@@ -44,10 +44,10 @@ const Piu: React.FC<PiuProps> = ({piuwerName,handlePin,handleLike,handleFollow, 
                     <small>{likeCount}</small>
                 </div>
 
-                <div className="pinDiv" onClick={()=> {handlePin()}} >
+                <div className="pinDiv" onClick={()=> {handlePin() }} >
                     <img src={isPinned? pinnedIcon : notPinnedIcon} alt=""/>
                 </div>
-                <div className="delDiv"  onClick={()=> {handleDel()}} >
+                <div className="delDiv"   onClick={()=> {handleDel()}} >
                     <img src={isDeletable? trashIcon : ""} alt=""/>
                 </div>
 

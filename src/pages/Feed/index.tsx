@@ -176,6 +176,7 @@ const Feed: React.FC = () => {
          }
       })
       console.log(response);
+      
       handleGetPius();
     },[token, user]);
 
@@ -276,7 +277,7 @@ const Feed: React.FC = () => {
 
   return (
     <Container>
-      <Header profilePicture={user?.foto}/>
+      <Header isSettings={false} profilePicture={user?.foto} handleDesconectar={signOut}/>
 
       <Button title="Sign out" onClick={handleSignOut} ></Button>
       <Button title="Teste" onClick={handleTest}></Button>

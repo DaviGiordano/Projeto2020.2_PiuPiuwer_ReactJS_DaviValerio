@@ -1,5 +1,6 @@
 import styled, {css} from 'styled-components';
 
+
 export const HeaderComponent = styled.header`
 
     
@@ -30,13 +31,32 @@ export const HeaderComponent = styled.header`
         max-width:30rem;
         margin-right:1rem;
     }
-    .navigation-item img, .profile-picture  img{
+    .navigation-item img, .profile-picture  {
         width:30px;
         margin-left:1rem;
     }
-    .profile-picture  img{
-        border-radius:50%;
+    ul{
+        position:absolute;
+        top:4rem;
+        right:1rem;
+        font-size:1rem;
+        list-style:none;
+        background:#C1D9FC;
+        cursor: pointer;
     }
+    li + li{
+        margin-top:0.5rem;
+    }
+   
+    .profile-picture {
+        border-radius:50%;
+        &:hover{
+            ul{
+                font-size:10rem;
+            }
+        }
+    }
+    
     .search-div{
         width:100%;
         margin-top:0.8rem; 
@@ -62,9 +82,13 @@ export const HeaderComponent = styled.header`
     }
     @media(min-width:1000px){
         .search-div{
+            z-index:900;
             position:relative;
             bottom:3.9rem;
 
+        }
+        #navigation-container{
+            z-index:1000;
         }
     }
     
