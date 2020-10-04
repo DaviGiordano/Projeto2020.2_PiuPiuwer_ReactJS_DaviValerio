@@ -5,13 +5,13 @@ import HomeIcon from '../../assets/images/icons/home-icon.svg'
 import NotificationsIcon from '../../assets/images/icons/notification-icon.svg'
 import SearchIcon from '../../assets/images/icons/search-icon.svg'
 import LocationIcon from '../../assets/images/icons/location-icon.svg'
+import ExitIcon from '../../assets/images/icons/exit-icon.svg'
 import {HeaderComponent} from './styles'
 interface HeaderProps {
     profilePicture?: string;
     handleDesconectar(): void;
-    isSettings: boolean;
 }
-const Header: React.FC<HeaderProps> = ({profilePicture, handleDesconectar, isSettings}) => {
+const Header: React.FC<HeaderProps> = ({profilePicture, handleDesconectar}) => {
     return(
         <>
         <HeaderComponent>
@@ -25,20 +25,14 @@ const Header: React.FC<HeaderProps> = ({profilePicture, handleDesconectar, isSet
                     <a className="navigation-item" href="./feed"><img src={HomeIcon} alt="Pagina principal"/></a>
                     <a className="navigation-item" href="./feed"><img src={NotificationsIcon} alt="Pagina principal"/></a>
                     <a className="navigation-item" href="./feed"><img src={SearchIcon} alt="Pagina principal"/></a>
-                    <a className="navigation-item" href="./feed"><img src={LocationIcon} alt="Pagina principal"/></a>
-                    <img onClick={() => {isSettings? isSettings = true : isSettings = false}} className="profile-picture" src={profilePicture} alt=""/>
-                    <ul>
-                        <li>Configuracões</li>
-                        <li>Preferencias</li>
-                        <li onClick={handleDesconectar}>Desconectar</li>
-                    </ul>
+                    <img  className="profile-picture" src={profilePicture} alt=""/>
+                    <img className="exit-icon" src={ExitIcon} onClick={handleDesconectar} alt="Pagina principal"/>
+                    
                 </nav>
-            
+               
                 
             </div>
-            <div className="search-div">
-                <input placeholder="Buscar" className="search-input" type="text"/>
-            </div>
+            
             
         </HeaderComponent>
         </>
@@ -46,3 +40,8 @@ const Header: React.FC<HeaderProps> = ({profilePicture, handleDesconectar, isSet
 };
 
 export default Header;
+
+/*<div className="search-div">
+                <input placeholder="Buscar" className="search-input" type="text"/>
+            </div>
+*/

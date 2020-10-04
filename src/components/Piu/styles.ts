@@ -10,7 +10,7 @@ export const PiuComponent = styled.div`
     width:70%;
     margin:1rem;
     padding:1rem;
-    border: 1px solid black;
+    border: 1px solid var(--color-line-in-white);
     border-radius:2rem;
     }
     footer img{
@@ -60,6 +60,14 @@ export const PiuComponent = styled.div`
     }
     footer{
         display:flex;
+        justify-content:space-between;
+    }
+    .firstIcons{
+        display:flex;
+        height: 30px;
+        width:max-content;
+        align-items:center;
+        justify-content:center;
     }
     .likeDiv{
         display:flex;
@@ -75,8 +83,7 @@ export const PiuComponent = styled.div`
         }
     }
     .delDiv{
-        justify-self:flex-end;
-        align-self:flex-end;
+        
         &:hover{
             cursor: pointer;
         }

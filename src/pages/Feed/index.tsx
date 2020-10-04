@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 
-import Piu,{PiuProps} from '../../components/Piu'
+import Piu from '../../components/Piu'
 import Header from '../../components/Header/';
 import Textarea from '../../components/Textarea/';
 import Button from '../../components/Button';
 
 import { Container } from './styles';
 
-import  { useAuth, UserApi, PiuData, Following } from '../../contexts/auth';
+import  { useAuth, UserApi, PiuData } from '../../contexts/auth';
 
 const Feed: React.FC = () => {
   
@@ -19,8 +19,7 @@ const Feed: React.FC = () => {
   const [alert, setAlert] = useState<string>('');
   const [textareaColor, setTextareaColor] = useState<string>('black');
   const [buttonOpacity, setButtonOpacity] = useState<number>(1);
-  const [pinnedPius,setPinnedPius] = useState<Array<PiuData>>([]);
-                                              // antes: ()
+
   const favoritedPiusIdsCallback = useCallback((pius: Array<PiuData>)=>{
     const favoritedPius = pius.filter(piu => {
       const usuariosQueFavoritaram = piu.favoritado_por.map((item: UserApi) => item.id);
@@ -49,7 +48,7 @@ const Feed: React.FC = () => {
     const piusByFollowedUsers = pius.filter(piu => {
       console.log(user.seguindo)
       const usernamesIamFollowing = user.seguindo.map((item) => item.username);
-      //console.log(usernamesIamFollowing)
+
       return usernamesIamFollowing.includes(piu.usuario.username)
     })
     return piusByFollowedUsers.map(piu => piu.id)
@@ -58,26 +57,17 @@ const Feed: React.FC = () => {
   const setSortedPius = useCallback((newPius: Array<PiuData>) => {
     const favoritedPiusIdsLocal = favoritedPiusIdsCallback(newPius);
     function compare(a: PiuData, b: PiuData){
-      // console.log({
-      //   result:(favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0),
-      //   favoritedPiusIdsLocal,
-      //   a:a.id,
-      //   b:b.id,
-      //   includeA: favoritedPiusIdsLocal.includes(a.id),
-      //   includeB: favoritedPiusIdsLocal.includes(b.id)
-      // });
+     
       return (favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0);
     }
     newPius.sort(compare);
     setPius(newPius);
-    //console.log(newPius);
-  },[setPius,favoritedPiusIdsCallback]);
+  },[setPius,favoritedPiusIdsCallback,user]);
 
-  //useEffect(() => setSortedPius(pius), [favoritedPiusIds, setSortedPius, pius]);
 
 
   /*DECLARAÇÃO DE handleGetPius */
-  async function handleGetPius(){
+  const handleGetPius = useCallback(async () => {
     const response = await axios({
       url: 'http://piupiuwer.polijr.com.br/pius/',
       method: 'GET',
@@ -86,8 +76,8 @@ const Feed: React.FC = () => {
     }
     })
     setSortedPius(response.data);
-    //console.log(response.data)
-  }
+  },[token]);
+ 
   
   /*CHAMADA DE handleGetPius */
   useEffect(()=>{
@@ -121,7 +111,6 @@ const Feed: React.FC = () => {
                   texto: mensagemInput
               }
           })
-          console.log(response.data);
           
           /*ADIÇAO DIRETA DO PIU À LISTA */
           if(response.data){
@@ -131,7 +120,6 @@ const Feed: React.FC = () => {
         }
       }
   },[user,setAlert,setTextareaValue,setSortedPius,token,pius]);
-    /*"Você vai esquecer algum dia - Falcs" */
   
 
   /*PROPS TEXTAREA */
@@ -265,8 +253,6 @@ const Feed: React.FC = () => {
 
   const handleTest= useCallback(() => {
 
-//    console.log(token);
-  //  console.log(pius);
     return 1;
   },[token,pius]);
   
@@ -277,11 +263,7 @@ const Feed: React.FC = () => {
 
   return (
     <Container>
-      <Header isSettings={false} profilePicture={user?.foto} handleDesconectar={signOut}/>
-
-      <Button title="Sign out" onClick={handleSignOut} ></Button>
-      <Button title="Teste" onClick={handleTest}></Button>
-      <Button title="Reload" onClick={handleGetPius}></Button>
+      <Header profilePicture={user?.foto} handleDesconectar={signOut}/>
 
       <Textarea 
       color={textareaColor} 

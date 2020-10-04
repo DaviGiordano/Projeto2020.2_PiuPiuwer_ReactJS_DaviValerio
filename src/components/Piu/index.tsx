@@ -38,15 +38,17 @@ const Piu: React.FC<PiuProps> = ({piuwerName,handlePin,handleLike,handleFollow, 
                 <p>{text}</p>
             </main>
             <footer>
+                <div className="firstIcons">
+                    <div className="likeDiv" onClick={() => {handleLike()}}>
+                        <img src={isLiked? likedIcon : notLikedIcon} alt=""/>
+                        <small>{likeCount}</small>
+                    </div>
 
-                <div className="likeDiv" onClick={() => {handleLike()}}>
-                    <img src={isLiked? likedIcon : notLikedIcon} alt=""/>
-                    <small>{likeCount}</small>
+                    <div className="pinDiv" onClick={()=> {handlePin() }} >
+                        <img src={isPinned? pinnedIcon : notPinnedIcon} alt=""/>
+                    </div>
                 </div>
-
-                <div className="pinDiv" onClick={()=> {handlePin() }} >
-                    <img src={isPinned? pinnedIcon : notPinnedIcon} alt=""/>
-                </div>
+                
                 <div className="delDiv"   onClick={()=> {handleDel()}} >
                     <img src={isDeletable? trashIcon : ""} alt=""/>
                 </div>

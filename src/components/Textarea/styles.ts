@@ -5,7 +5,6 @@ interface TextareaProps{
 }
 
 export const TextareaComponent = styled.div`
-
     max-width:100%;
     margin:1rem;
     display:flex;
@@ -30,7 +29,9 @@ export const TextareaComponent = styled.div`
         border-color:black;
         padding:0.6rem;
         background:none;
-        border-color:${props => props.color}
+        border-color:${props => props.color};
+        resize: none;
+
     }
     footer{
         display:flex;

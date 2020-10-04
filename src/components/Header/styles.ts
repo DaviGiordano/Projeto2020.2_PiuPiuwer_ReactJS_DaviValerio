@@ -2,16 +2,17 @@ import styled, {css} from 'styled-components';
 
 
 export const HeaderComponent = styled.header`
-
-    
+    position: sticky;
+    top:0;  
+    background: #86B5FD;
     .main-content{
     display:flex;
     max-width:100%;
     height:min-content;
     align-items:center;
     justify-content:space-between;
-    border-bottom: 1px solid black;
     padding:0.6rem;
+      
     }
     
     #logo-container{
@@ -23,25 +24,37 @@ export const HeaderComponent = styled.header`
         font-family: Quicksand;
         font-size:1.4rem;
     }
-
+    #site-name{
+        color:#003F88;
+    }
     #logo-container img{
         width:50px
     }
     #navigation-container{
         max-width:30rem;
         margin-right:1rem;
+        display:flex;
+        align-items:center;
+        justify-content:center;
     }
-    .navigation-item img, .profile-picture  {
+    .navigation-item img, .profile-picture{
         width:30px;
         margin-left:1rem;
     }
+    
+    .exit-icon{
+        margin-left:1rem;
+
+        width:25px;
+        &:hover{
+            cursor:pointer;
+        }
+    }
     ul{
-        position:absolute;
         top:4rem;
         right:1rem;
         font-size:1rem;
         list-style:none;
-        background:#C1D9FC;
         cursor: pointer;
     }
     li + li{
@@ -49,14 +62,14 @@ export const HeaderComponent = styled.header`
     }
    
     .profile-picture {
+
         border-radius:50%;
         &:hover{
-            ul{
-                font-size:10rem;
-            }
+            cursor: pointer;
+            
         }
     }
-    
+    /*
     .search-div{
         width:100%;
         margin-top:0.8rem; 
@@ -74,19 +87,22 @@ export const HeaderComponent = styled.header`
         padding:0.5rem;
         background:none;
     }
-    
+    */
     @media(max-width:410px){
         #logo-container #site-name{
             display:none;
         }
+        
+        background-color: var(--color-primary);
+    
     }
     @media(min-width:1000px){
-        .search-div{
+        /*.search-div{
             z-index:900;
             position:relative;
             bottom:3.9rem;
 
-        }
+        }*/
         #navigation-container{
             z-index:1000;
         }
