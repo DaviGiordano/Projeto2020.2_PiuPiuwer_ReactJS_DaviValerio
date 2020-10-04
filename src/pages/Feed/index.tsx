@@ -69,12 +69,16 @@ const Feed: React.FC = () => {
 
   const setSortedPius = useCallback((newPius: Array<PiuData>) => {
     const favoritedPiusIdsLocal = favoritedPiusIdsCallback(newPius);
-
-    function compare(a: PiuData, b: PiuData){
+    
+    function compareFavorite(a: PiuData, b: PiuData){
       return (favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0);
     }
-
-    newPius.sort(compare);
+    
+    //primeiro organizar por data
+    newPius.sort((a,b) => Date.parse(b.horario) - Date.parse(a.horario));
+    //depois organizar por favoritado
+    newPius.sort(compareFavorite);
+    
     setPius(newPius);
   },[setPius,favoritedPiusIdsCallback,user]);
   
@@ -151,6 +155,24 @@ const Feed: React.FC = () => {
   const pinThisPiu = useCallback( async (item:PiuData) => {
     const userId = user.id
     const piuId = item.id
+    
+    const newPius = pius.map( piu =>{
+    //  não consigo comparar objetos, então comparo suas keys (ids)
+      const favoritadosIds = piu.favoritado_por.map(user => user.id);
+      
+      //estrutura ternária sensacional
+      return piu.id === item.id 
+        ? {
+          ...piu,
+          favoritado_por: favoritadosIds.includes(user.id) 
+            ? piu.favoritado_por.filter(item => item.id != user.id) 
+            : [ ...piu.favoritado_por, user ]  
+        }
+        : piu;
+
+    });
+    //console.log(newPius);
+    setSortedPius(newPius);
     const response = await axios({
       url: 'http://piupiuwer.polijr.com.br/pius/favoritar/',
       method: 'POST',
@@ -162,26 +184,6 @@ const Feed: React.FC = () => {
         piu: piuId
       }
     })
-    const newPius = pius.map( piu =>{
-      const favoritadosUsernames = piu.favoritado_por.map(favoritado_por => favoritado_por.username);
-      if(piu.id === item.id){
-        if(favoritadosUsernames.includes(user.username)){
-          const newFavoritados = piu.favoritado_por.filter(item => item.username != user.username);
-          
-          piu.favoritado_por = newFavoritados; 
-          console.log(piu.favoritado_por);
-          //console.log(newFavoritados);
-        }
-        else{
-          piu.favoritado_por.push(user);
-          console.log(piu.favoritado_por);
-        }
-      }
-    return piu;
-    });
-    console.log(newPius);
-    setSortedPius(newPius);
-      
     //handleGetPius();
   }, [token, user,pius,setSortedPius]);
 
@@ -189,6 +191,23 @@ const Feed: React.FC = () => {
   const likeThisPiu = useCallback( async (item:PiuData) => {
     const userId = user.id
     const piuId = item.id
+    
+    const newPius = pius.map( piu =>{
+      const likersIds = piu.likers.map(user => user.id);
+
+      return piu.id === item.id
+      ? {
+        ...piu,
+        likers: likersIds.includes(user.id)
+        ?  piu.likers.filter(item => item.id != user.id)
+        :  [ ...piu.likers, user]
+      }
+      : piu;
+
+      
+    });
+    setSortedPius(newPius);
+    
     const response = await axios({
       url: 'http://piupiuwer.polijr.com.br/pius/dar-like/',
       method: 'POST',
@@ -200,25 +219,6 @@ const Feed: React.FC = () => {
         piu: piuId
       }
     })
-    const newPius = pius.map( piu =>{
-      const likersUsernames = piu.likers.map(liker => liker.username);
-      //console.log(likersUsernames)
-      if(piu.id === item.id){
-        if(likersUsernames.includes(user.username)){
-          const newLikers = piu.likers.filter(item => item.username != user.username);
-          
-          piu.likers = newLikers; 
-          console.log(piu.likers);
-          console.log(newLikers);
-        }
-        else{
-          piu.likers.push(user);
-        }
-      }
-    return piu;
-    });
-    setSortedPius(newPius);
-    
   }, [token, user,pius,setSortedPius]);
   
   const followThisUser = useCallback( async (item:PiuData) => {
