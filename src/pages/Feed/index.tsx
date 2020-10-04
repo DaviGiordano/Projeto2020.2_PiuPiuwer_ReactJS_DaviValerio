@@ -20,53 +20,6 @@ const Feed: React.FC = () => {
   const [textareaColor, setTextareaColor] = useState<string>('black');
   const [buttonOpacity, setButtonOpacity] = useState<number>(1);
 
-  const favoritedPiusIdsCallback = useCallback((pius: Array<PiuData>)=>{
-    const favoritedPius = pius.filter(piu => {
-      const usuariosQueFavoritaram = piu.favoritado_por.map((item: UserApi) => item.id);
-      return usuariosQueFavoritaram.includes(user.id);
-    })
-    return favoritedPius.map(piu => piu.id)
-  },[user,pius]);
-  const favoritedPiusIds = useMemo(
-    () => favoritedPiusIdsCallback(pius)
-    ,[user, pius]
-  );
-  
-  
-  const likedPiusIds = useMemo(()=>{
-    const likedPius = pius.filter(piu => {
-      const usuariosQueDeramLike = piu.likers.map((item: UserApi) => item.id);
-      console.log("BBBBBBBBB")
-
-      return usuariosQueDeramLike.includes(user?.id);
-    }) 
-    return likedPius.map(piu => piu.id)
-  },[user, pius]);
-
-  const piusByFollowedUsersIds = useMemo(()=>{
-
-    const piusByFollowedUsers = pius.filter(piu => {
-      console.log(user.seguindo)
-      const usernamesIamFollowing = user.seguindo.map((item) => item.username);
-
-      return usernamesIamFollowing.includes(piu.usuario.username)
-    })
-    return piusByFollowedUsers.map(piu => piu.id)
-  },[user, pius]);
-  
-  const setSortedPius = useCallback((newPius: Array<PiuData>) => {
-    const favoritedPiusIdsLocal = favoritedPiusIdsCallback(newPius);
-    function compare(a: PiuData, b: PiuData){
-     
-      return (favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0);
-    }
-    newPius.sort(compare);
-    setPius(newPius);
-  },[setPius,favoritedPiusIdsCallback,user]);
-
-
-
-  /*DECLARAÇÃO DE handleGetPius */
   const handleGetPius = useCallback(async () => {
     const response = await axios({
       url: 'http://piupiuwer.polijr.com.br/pius/',
@@ -75,14 +28,62 @@ const Feed: React.FC = () => {
           Authorization: `JWT ${token}`
     }
     })
-    setSortedPius(response.data);
+    if(response.data){
+      console.log(response.data);
+      setSortedPius(response.data);
+    }
   },[token]);
- 
+
+  const favoritedPiusIdsCallback = useCallback((pius: Array<PiuData>)=>{
+    const favoritedPius = pius.filter(piu => {
+      const usuariosQueFavoritaram = piu.favoritado_por.map((item: UserApi) => item.id);
+      return usuariosQueFavoritaram.includes(user.id);
+    })
+    return favoritedPius.map(piu => piu.id)
+  },[user,pius]);
+
+  const favoritedPiusIds = useMemo(
+    () => favoritedPiusIdsCallback(pius)
+    ,[user, pius]
+  );
+  
+
+  const likedPiusIds = useMemo(()=>{
+    const likedPius = pius.filter(piu => {
+      const usuariosQueDeramLike = piu.likers.map((item: UserApi) => item.id);
+      return usuariosQueDeramLike.includes(user?.id);
+    }) 
+
+    return likedPius.map(piu => piu.id)
+  },[user, pius]);
+
+
+  const piusByFollowedUsersIds = useMemo(()=>{
+    const piusByFollowedUsers = pius.filter(piu => {
+      const usernamesIamFollowing = user.seguindo.map((item) => item.username);
+      return usernamesIamFollowing.includes(piu.usuario.username)
+    })
+    return piusByFollowedUsers.map(piu => piu.id)
+  },[user, pius]);
+  
+
+  const setSortedPius = useCallback((newPius: Array<PiuData>) => {
+    const favoritedPiusIdsLocal = favoritedPiusIdsCallback(newPius);
+
+    function compare(a: PiuData, b: PiuData){
+      return (favoritedPiusIdsLocal.includes(b.id)? 1 : 0 ) - (favoritedPiusIdsLocal.includes(a.id)? 1 : 0);
+    }
+
+    newPius.sort(compare);
+    setPius(newPius);
+  },[setPius,favoritedPiusIdsCallback,user]);
+  
   
   /*CHAMADA DE handleGetPius */
   useEffect(()=>{
     if(!!token){
       handleGetPius();
+      console.log(favoritedPiusIds);
     }
   },[token]);
 
@@ -90,35 +91,34 @@ const Feed: React.FC = () => {
   const sendPiu = useCallback( async (mensagemInput:string)=>{
 
       /*Tratamento dos erros de input */
-      if(user?.id){
-        if(!mensagemInput){
-          setAlert("Campo vazio")
-        }else if(mensagemInput.length>140){
-          setAlert("Limite de caracteres ultrapassado")
-        }else{
-          setTextareaValue("");
-          setAlert("");
+    if(user?.id){
+      if(!mensagemInput){
+        setAlert("Campo vazio")
+      }else if(mensagemInput.length>140){
+        setAlert("Limite de caracteres ultrapassado")
+      }else{
+        setTextareaValue("");
+        setAlert("");
 
-          /*CHAMADA À API */
-          const response = await axios({
-              url: 'http://piupiuwer.polijr.com.br/pius/',
-              method: 'POST',
-              headers: {
-                  Authorization: `JWT ${token}`
-              },
-              data: {
-                  usuario: user.id,
-                  texto: mensagemInput
-              }
-          })
+        /*CHAMADA À API */
+        const response = await axios({
+            url: 'http://piupiuwer.polijr.com.br/pius/',
+            method: 'POST',
+            headers: {
+                Authorization: `JWT ${token}`
+            },
+            data: {
+                usuario: user.id,
+                texto: mensagemInput
+            }
+        })
           
-          /*ADIÇAO DIRETA DO PIU À LISTA */
-          if(response.data){
-            setSortedPius([response.data, ...pius]);
-            console.log(pius);
-          }
+        /*ADIÇAO DIRETA DO PIU À LISTA */
+        if(response.data){
+          setSortedPius([response.data, ...pius]);
         }
       }
+    }
   },[user,setAlert,setTextareaValue,setSortedPius,token,pius]);
   
 
@@ -134,88 +134,115 @@ const Feed: React.FC = () => {
     }
   },[textareaValue.length])
 
-    const delThisPiu = useCallback( async (piu: PiuData)=>{
-      
-      const piuId = piu.id
-      const response = await axios({
-        url: `http://piupiuwer.polijr.com.br/pius/${piuId}`,
-        method: 'DELETE',
-        headers: {
+
+  const delThisPiu = useCallback( async (piu: PiuData)=>{
+    const piuId = piu.id
+    const response = await axios({
+      url: `http://piupiuwer.polijr.com.br/pius/${piuId}`,
+      method: 'DELETE',
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    })
+    handleGetPius();
+  },[token]);
+
+
+  const pinThisPiu = useCallback( async (item:PiuData) => {
+    const userId = user.id
+    const piuId = item.id
+    const response = await axios({
+      url: 'http://piupiuwer.polijr.com.br/pius/favoritar/',
+      method: 'POST',
+      headers: {
           Authorization: `JWT ${token}`
+      },
+      data: {
+        usuario: userId,
+        piu: piuId
+      }
+    })
+    const newPius = pius.map( piu =>{
+      const favoritadosUsernames = piu.favoritado_por.map(favoritado_por => favoritado_por.username);
+      if(piu.id === item.id){
+        if(favoritadosUsernames.includes(user.username)){
+          const newFavoritados = piu.favoritado_por.filter(item => item.username != user.username);
+          
+          piu.favoritado_por = newFavoritados; 
+          console.log(piu.favoritado_por);
+          //console.log(newFavoritados);
         }
-      })
-      handleGetPius();
-    },[token]);
-
-    const pinThisPiu = useCallback( async (item:PiuData) => {
+        else{
+          piu.favoritado_por.push(user);
+          console.log(piu.favoritado_por);
+        }
+      }
+    return piu;
+    });
+    console.log(newPius);
+    setSortedPius(newPius);
       
-      console.log("hey");
-      const userId = user.id
-      const piuId = item.id
-      const response = await axios({
-         url: 'http://piupiuwer.polijr.com.br/pius/favoritar/',
-         method: 'POST',
-         headers: {
-             Authorization: `JWT ${token}`
-         },
-         data: {
-             usuario: userId,
-             piu: piuId
-         }
-      })
-      console.log(response);
-      
-      handleGetPius();
-    },[token, user]);
+    //handleGetPius();
+  }, [token, user,pius,setSortedPius]);
 
-    const likeThisPiu = useCallback( async (item:PiuData) => {
-
-      const userId = user.id
-      const piuId = item.id
-      
+  /*RETIRAR O HANDLE GET PIUS DO LIKE THIS PIU */
+  const likeThisPiu = useCallback( async (item:PiuData) => {
+    const userId = user.id
+    const piuId = item.id
+    const response = await axios({
+      url: 'http://piupiuwer.polijr.com.br/pius/dar-like/',
+      method: 'POST',
+      headers: {
+          Authorization: `JWT ${token}`
+      },
+      data: {
+        usuario: userId,
+        piu: piuId
+      }
+    })
+    const newPius = pius.map( piu =>{
+      const likersUsernames = piu.likers.map(liker => liker.username);
+      //console.log(likersUsernames)
+      if(piu.id === item.id){
+        if(likersUsernames.includes(user.username)){
+          const newLikers = piu.likers.filter(item => item.username != user.username);
+          
+          piu.likers = newLikers; 
+          console.log(piu.likers);
+          console.log(newLikers);
+        }
+        else{
+          piu.likers.push(user);
+        }
+      }
+    return piu;
+    });
+    setSortedPius(newPius);
     
-      const response = await axios({
-         url: 'http://piupiuwer.polijr.com.br/pius/dar-like/',
-         method: 'POST',
-         headers: {
-             Authorization: `JWT ${token}`
-         },
-         data: {
-             usuario: userId,
-             piu: piuId
-         }
-      })
-      handleGetPius();
-   
-    }, [token, user]);
+  }, [token, user,pius,setSortedPius]);
   
-    const followThisUser = useCallback( async (item:PiuData) => {
-      
-      const userToFollowId = Number(item.usuario.id);
-      const currentUserId = Number(user.id);
-      const response = await axios({
-        url: 'http://piupiuwer.polijr.com.br/usuarios/seguir/',
-        method: 'POST',
-        headers: {
-            Authorization: `JWT ${token}`
-        },
-        data: {
-            usuario_id: userToFollowId,
-            logado_id: currentUserId
-        }
-     })
-     console.log(response);
-
-     changeUser(user.username);
-
-    },[token,user]);
+  const followThisUser = useCallback( async (item:PiuData) => {
+    const userToFollowId = Number(item.usuario.id);
+    const currentUserId = Number(user.id);
+    const response = await axios({
+      url: 'http://piupiuwer.polijr.com.br/usuarios/seguir/',
+      method: 'POST',
+      headers: {
+        Authorization: `JWT ${token}`
+      },
+      data: {
+          usuario_id: userToFollowId,
+          logado_id: currentUserId
+      }
+    })
+    changeUser(user.username);
+  },[token,user]);
   /* */
   
   
   /*DECLARAÇÃO RENDER PIUS*/
   const renderPius = useCallback(()=>{
     return pius.map((item) =>{
-      
       return (
         <Piu
           key={item.id}
@@ -250,46 +277,40 @@ const Feed: React.FC = () => {
     signOut();
   },[signOut]);
   
-
-  const handleTest= useCallback(() => {
-
-    return 1;
-  },[token,pius]);
   
-
-  
-
- 
-
   return (
     <Container>
-      <Header profilePicture={user?.foto} handleDesconectar={signOut}/>
+
+      <Header 
+        profilePicture={user?.foto} 
+        handleDesconectar={handleSignOut}
+      />
 
       <Textarea 
-      color={textareaColor} 
-      placeholder="O que você está ciscando hoje?" 
-      caracterCount={textareaValue.length} 
-      value={textareaValue} 
-      onChange={(e) => {setTextareaValue(e.target.value)}}>
-      
-      <p id="alert-message">{alert}</p>
-        
-      <Button 
-      id="send-btn" 
-      title="Enviar" 
-      buttonOpacity={buttonOpacity} 
-      onClick={()=>{sendPiu(textareaValue)}}
-      ></Button>
-      
+        color={textareaColor} 
+        placeholder="O que você está ciscando hoje?" 
+        caracterCount={textareaValue.length} 
+        value={textareaValue} 
+        onChange={(e) => {setTextareaValue(e.target.value)}}
+      >
+
+        <p id="alert-message">{alert}</p>
+
+        <Button 
+          id="send-btn" 
+          title="Enviar" 
+          buttonOpacity={buttonOpacity} 
+          onClick={()=>{sendPiu(textareaValue)}}
+        ></Button>
+
       </Textarea>
      
       <main>
-        {
-        renderPius()
-        }
+        {renderPius()}
       </main>
 
-    </Container>);
+    </Container>
+  );
 }
 
 export default Feed;
